@@ -214,6 +214,7 @@ function App() {
   const [agents, setAgents] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [rateLimited, setRateLimited] = useState(false)
   const [search, setSearch] = useState('')
   const [activeTrack, setActiveTrack] = useState('all')
   const [expandedId, setExpandedId] = useState(null)
@@ -228,9 +229,12 @@ function App() {
       const live = await fetchAgents({ search: searchQuery || '' })
       const merged = mergeLiveAndDemo(live)
       setAgents(merged)
+      setRateLimited(false)
     } catch (err) {
+      const isRateLimited = err.message.includes('429')
       setError(err.message)
-      setAgents([])
+      setRateLimited(isRateLimited)
+      setAgents(mergeLiveAndDemo([]))
     } finally {
       setLoading(false)
     }
@@ -313,8 +317,10 @@ function App() {
           )}
 
           {error && !loading && (
-            <div className='era-empty'>
-              8004scan unreachable: {error}. Showing demo agents only.
+            <div className='era-empty' style={rateLimited ? { borderColor: '#ffb270' } : {}}>
+              {rateLimited
+                ? '8004scan rate-limited (HTTP 429). Showing demo agents. Retries with backoff were attempted.'
+                : `8004scan unreachable: ${error}. Showing demo agents only.`}
             </div>
           )}
 
