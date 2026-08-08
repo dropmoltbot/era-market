@@ -1,7 +1,7 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 import { motion } from 'framer-motion'
 
-export default function Header() {
+export default function Header({ onRegister }) {
   return (
     <header
       style={{
@@ -57,11 +57,33 @@ export default function Header() {
           </div>
         </motion.div>
 
-        <ConnectButton
-          showBalance={false}
-          chainStatus={{ smallScreen: 'icon', largeScreen: 'full' }}
-          label='Connect Wallet'
-        />
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <motion.button
+            whileHover={{ y: -1 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={onRegister}
+            style={{
+              padding: '10px 16px',
+              borderRadius: 12,
+              border: '1px solid rgba(240,185,11,0.2)',
+              background: 'rgba(240,185,11,0.05)',
+              color: '#f0b90b',
+              fontSize: 13,
+              fontWeight: 700,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 6,
+            }}
+          >
+            + Register Agent
+          </motion.button>
+          <ConnectButton
+            showBalance={false}
+            chainStatus={{ smallScreen: 'icon', largeScreen: 'full' }}
+            label='Connect Wallet'
+          />
+        </div>
       </div>
     </header>
   )

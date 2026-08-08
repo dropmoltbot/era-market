@@ -7,6 +7,10 @@ export const config = getDefaultConfig({
   projectId: 'era-market-bnb-hackathon',
   chains: [bsc],
   ssr: false,
+  // Use publicnode RPC which has CORS headers enabled
+  transports: {
+    [bsc.id]: 'https://bsc-dataseed.bnbchain.org',
+  },
 })
 
 export { bsc }

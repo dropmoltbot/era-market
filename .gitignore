@@ -1,3 +1,5 @@
 node_modules
 dist
-
+contracts/lib
+contracts/out
+contracts/cache

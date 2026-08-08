@@ -12,6 +12,7 @@ import TrackBar from './components/TrackBar'
 import AgentCard from './components/AgentCard'
 import HireDialog from './components/HireDialog'
 import JobTracker from './components/JobTracker'
+import RegisterDialog from './components/RegisterDialog'
 
 const REGISTRY_ADDRESS = '0x8004A169FB4a3325136EB29fA0ceB6D2e539a432'
 const SCAN_URL = 'https://8004scan.io'
@@ -26,6 +27,7 @@ function AppContent() {
   const [expandedId, setExpandedId] = useState(null)
   const [hireAgent, setHireAgent] = useState(null)
   const [activeJob, setActiveJob] = useState(null)
+  const [showRegister, setShowRegister] = useState(false)
   const searchTimer = useRef(null)
 
   const load = useCallback(async (searchQuery) => {
@@ -63,7 +65,7 @@ function AppContent() {
 
   return (
     <div className='app-container'>
-      <Header />
+      <Header onRegister={() => setShowRegister(true)} />
 
       <div className='app-content'>
         {/* Hero */}
@@ -166,6 +168,16 @@ function AppContent() {
       <AnimatePresence>
         {activeJob && (
           <JobTracker job={activeJob} onClose={() => setActiveJob(null)} />
+        )}
+      </AnimatePresence>
+
+      {/* Register dialog */}
+      <AnimatePresence>
+        {showRegister && (
+          <RegisterDialog
+            onClose={() => setShowRegister(false)}
+            onRegistered={() => load(search)}
+          />
         )}
       </AnimatePresence>
 
